@@ -58,6 +58,6 @@ def HSV_histo(img, file_name: str):
 
 if __name__ == '__main__':
     img = cv2.imread('histogram.jpg')
-    BGR_histo(img, 'q1_bgr.jpg')
-    HSV_histo(img, 'q1_hsv.jpg')
+    BGR_histo(img, 'q1_bgr_ans.jpg')
+    HSV_histo(img, 'q1_hsv_ans.jpg')
     
