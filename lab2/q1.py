@@ -14,12 +14,13 @@ def histo_equalize(arr):
         cum_arr[i] = cum_arr[i - 1] + histo[i]
     
     MAX_VAL = 255
-    result = np.zeros(arr.shape, dtype=np.uint8)
+    result = np.zeros(arr.shape, dtype=np.int32)
 
     for i in range(n):
         for j in range(m):
-            result[i, j] = math.floor(cum_arr[arr[i, j]] / cum_arr[MAX_VAL] * MAX_VAL)
-
+            result[i, j] = round(cum_arr[arr[i, j]] / cum_arr[MAX_VAL] * MAX_VAL)
+    result = np.clip(result, 0, 255)
+    result = np.array(result, dtype=np.uint8)
     return result
 
 def BGR_histo(img, file_name: str):
@@ -29,9 +30,7 @@ def BGR_histo(img, file_name: str):
     b_his_eq = histo_equalize(b)
     g_his_eq = histo_equalize(g)
     r_his_eq = histo_equalize(r)
-    print(b_his_eq)
-    print(g_his_eq)
-    print(r_his_eq)
+    
     result = cv2.merge([b_his_eq, g_his_eq, r_his_eq])
     cv2.imshow('result.jpg', result)
     cv2.waitKey(0)
@@ -43,11 +42,7 @@ def HSV_histo(img, file_name: str):
     h = img[:,:,0]
     s = img[:,:,1]
     v = img[:,:,2]
-    # h_his_eq = histo_equalize(h)
-    # s_his_eq = histo_equalize(s)
     v_his_eq = histo_equalize(v)
-
-    print(v_his_eq)
     result = cv2.merge([h, s, v_his_eq])
     result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
     cv2.imshow('result.jpg', result)
