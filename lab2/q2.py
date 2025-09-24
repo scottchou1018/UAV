@@ -16,26 +16,27 @@ def otsu_threshold(img: np.ndarray) -> int:
     histo = get_histo(img)
     n_b = 0
     n_o = np.sum(histo)
-    bavg = 0
-    oavg = 0
+    b_sum = 0
+    o_sum = 0
     for i in range(VAL_MAX + 1):
-        oavg += histo[i] * i
-    oavg = oavg / n_o
+        o_sum += histo[i] * i
 
     max_val = -1
     max_thres = 0
-    
-    for i in range(1, VAL_MAX):
+    for i in range(0, VAL_MAX + 1):
         
-        if n_b + histo[i] == 0 or n_o - histo[i] == 0:
-            continue
-        bavg = (bavg * n_b + i * histo[i]) / (n_b + histo[i])
-        oavg = (oavg * n_o - i * histo[i]) / (n_o - histo[i])
+        
+        if n_b != 0 and n_o != 0:
+            bavg = b_sum / n_b
+            oavg = o_sum / n_o
+            if n_b * n_o * ((bavg - oavg) ** 2) > max_val:
+                max_thres = i
+                max_val = n_b * n_o * ((bavg - oavg) ** 2)
+        
+        b_sum = (b_sum + i * histo[i])
+        o_sum = (o_sum - i * histo[i])
         n_b = n_b + histo[i]
         n_o = n_o - histo[i]
-        if n_b * n_o * ((bavg - oavg) ** 2) > max_val:
-            max_thres = i
-            max_val = n_b * n_o * ((bavg - oavg) ** 2)
     
     return max_thres
 
