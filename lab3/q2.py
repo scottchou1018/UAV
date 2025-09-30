@@ -67,23 +67,6 @@ def connected_component(img: np.ndarray) -> Tuple[np.ndarray, DSU]:
                 result[i, j] = dsu.find_min_id(result[i, j])
     return result, dsu
 
-
-def rand_color():
-    return np.array([random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)])
-
-def draw_by_component(img: np.ndarray):
-    compo, dsu = connected_component(img)
-    n, m = compo.shape
-    colored = np.zeros((n, m, 3), dtype=np.uint8)
-    color_map = defaultdict(rand_color)
-    for i in range(n):
-        for j in range(m):
-            if compo[i, j] != 0:
-                colored[i, j] = color_map[compo[i, j]]
-    
-    return colored
-            
-
 if __name__ == "__main__":
 
     T = 30
