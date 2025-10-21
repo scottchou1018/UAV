@@ -48,7 +48,6 @@ def main():
     intrinsic = fs.getNode("camera_matrix").mat()
     distortion = fs.getNode('dist_coeff').mat()
 
-    print(intrinsic.shape)
 
     # Tello
     drone = Tello()
